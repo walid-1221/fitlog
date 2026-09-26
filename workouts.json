@@ -1,0 +1,148 @@
+{
+  "workouts": [
+    {
+      "id": 1,
+      "title": "Barbell Bench Press",
+      "subtitle": "Barbell, Bench",
+      "image": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=600",
+      "primaryMuscle": "Chest",
+      "equipment": "Barbell",
+      "duration": 25,
+      "calories": 160,
+      "rating": 4.8,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 2,
+      "title": "Pull-Up",
+      "subtitle": "Pull-up Bar",
+      "image": "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600",
+      "primaryMuscle": "Back",
+      "equipment": "Bodyweight",
+      "duration": 15,
+      "calories": 120,
+      "rating": 4.7,
+      "difficulty": "Intermediate"
+    },
+    {
+      "id": 3,
+      "title": "Back Squat",
+      "subtitle": "Barbell, Rack",
+      "image": "https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=600",
+      "primaryMuscle": "Legs",
+      "equipment": "Barbell",
+      "duration": 30,
+      "calories": 240,
+      "rating": 4.9,
+      "difficulty": "Advanced"
+    },
+    {
+      "id": 4,
+      "title": "Overhead Press",
+      "subtitle": "Barbell",
+      "image": "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=600",
+      "primaryMuscle": "Shoulders",
+      "equipment": "Barbell",
+      "duration": 20,
+      "calories": 150,
+      "rating": 4.6,
+      "difficulty": "Advanced"
+    },
+    {
+      "id": 5,
+      "title": "Dumbbell Bicep Curl",
+      "subtitle": "Dumbbells",
+      "image": "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?w=600",
+      "primaryMuscle": "Arms",
+      "equipment": "Dumbbells",
+      "duration": 10,
+      "calories": 80,
+      "rating": 4.3,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 6,
+      "title": "Dumbbell Bicep Curl",
+      "subtitle": "Dumbbells",
+      "image": "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?w=600",
+      "primaryMuscle": "Arms",
+      "equipment": "Dumbbells",
+      "duration": 10,
+      "calories": 80,
+      "rating": 4.3,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 7,
+      "title": "Hollow-Body Plank",
+      "subtitle": "Bodyweight",
+      "image": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600",
+      "primaryMuscle": "Core",
+      "equipment": "Bodyweight",
+      "duration": 10,
+      "calories": 60,
+      "rating": 4.4,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 8,
+      "title": "Dumbbell Bicep Curl",
+      "subtitle": "Dumbbells",
+      "image": "https://images.unsplash.com/photo-1583473848882-f9a5bc7fd2ee?w=600",
+      "primaryMuscle": "Arms",
+      "equipment": "Dumbbells",
+      "duration": 12,
+      "calories": 90,
+      "rating": 4.3,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 9,
+      "title": "Conventional Deadlift",
+      "subtitle": "Barbell",
+      "image": "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?w=600",
+      "primaryMuscle": "Full Body",
+      "equipment": "Barbell",
+      "duration": 25,
+      "calories": 300,
+      "rating": 4.9,
+      "difficulty": "Advanced"
+    },
+    {
+      "id": 10,
+      "title": "Push-Up",
+      "subtitle": "Bodyweight",
+      "image": "https://images.unsplash.com/photo-1598971639058-fab3c3109a00?w=600",
+      "primaryMuscle": "Chest",
+      "equipment": "Bodyweight",
+      "duration": 10,
+      "calories": 80,
+      "rating": 4.5,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 11,
+      "title": "Walking Lunge",
+      "subtitle": "Dumbbells (optional)",
+      "image": "https://images.unsplash.com/photo-1434682881908-b43d0467b798?w=600",
+      "primaryMuscle": "Legs",
+      "equipment": "Dumbbells",
+      "duration": 15,
+      "calories": 170,
+      "rating": 4.4,
+      "difficulty": "Beginner"
+    },
+    {
+      "id": 12,
+      "title": "Russian Twist",
+      "subtitle": "Medicine Ball",
+      "image": "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600",
+      "primaryMuscle": "Core",
+      "equipment": "Medicine Ball",
+      "duration": 8,
+      "calories": 70,
+      "rating": 4.1,
+      "difficulty": "Intermediate"
+    }
+  ]
+}
