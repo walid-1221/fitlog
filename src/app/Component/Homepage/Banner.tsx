@@ -28,7 +28,7 @@ FitLog is a dark, no-nonsense gym companion: pick a lift, lock it into today&apo
             </p>
 
             <div className="flex flex-wrap gap-4 pt-2">
-              {/* ✅ Anchor Link — Library section-এ scroll করবে */}
+               {/* Anchor Link  */}
               <a
                 href="#library"
                 className="bg-lime-400 hover:bg-lime-300 text-black font-bold px-6 py-3 rounded-full transition-all duration-300 hover:scale-105 inline-flex items-center gap-2"
