@@ -22,6 +22,7 @@ A dark, no-nonsense gym companion built with Next.js. Pick a lift, lock it into 
 
 ## 🛠️ Technologies Used
 
+
 | Technology | Purpose |
 | :--- | :--- |
 | **Next.js 16** (App Router) | React framework with SSR, routing, and server components |
