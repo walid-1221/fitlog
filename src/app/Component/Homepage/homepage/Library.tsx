@@ -40,7 +40,7 @@ const Library = async () => {
           </p>
         </div>
 
-        {/* ✅ Client Component — Sort + Cards */}
+        {/* Client Component — Sort + Cards */}
         <LibrarySort workouts={libraryData} />
       </div>
     </section>
