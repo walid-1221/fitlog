@@ -1,118 +1,212 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  ReactNode,
-} from 'react';
+import React, { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { toast } from 'react-toastify';
+import { usePlan } from '@/app/context/PlanContext';
 import { IWorkout } from '@/app/types/types';
 
-interface PlanContextType {
-  plan: IWorkout[];
-  saved: IWorkout[];
-  addToPlan: (workout: IWorkout) => void;
-  addToSaved: (workout: IWorkout) => void;
-  removeFromPlan: (id: number) => void;
-  removeFromSaved: (id: number) => void;
-  isInPlan: (id: number) => boolean;
-  isInSaved: (id: number) => boolean;
-}
+const MyPlanPage = () => {
+  const { plan, saved, removeFromPlan, removeFromSaved } = usePlan();
+  const [activeTab, setActiveTab] = useState<'plan' | 'saved'>('plan');
 
-const PlanContext = createContext<PlanContextType>({
-  plan: [],
-  saved: [],
-  addToPlan: () => {},
-  addToSaved: () => {},
-  removeFromPlan: () => {},
-  removeFromSaved: () => {},
-  isInPlan: () => false,
-  isInSaved: () => false,
-});
+  const currentList = activeTab === 'plan' ? plan : saved;
 
-export const PlanProvider = ({ children }: { children: ReactNode }) => {
-  // 🔥 Lazy initialization — localStorage থেকে সরাসরি load
-  const [plan, setPlan] = useState<IWorkout[]>(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const saved = localStorage.getItem('fitlog_plan');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
+  // Metrics
+  const totalExercises = plan.length;
+  const totalMinutes = plan.reduce((sum, w) => sum + w.duration, 0);
+  const totalCalories = plan.reduce((sum, w) => sum + w.caloriesBurned, 0);
+
+  const handleRemove = (id: number) => {
+    if (activeTab === 'plan') {
+      removeFromPlan(id);
+      toast.info('Removed from plan');
+    } else {
+      removeFromSaved(id);
+      toast.info('Removed from saved');
     }
-  });
-
-  const [saved, setSaved] = useState<IWorkout[]>(() => {
-    if (typeof window === 'undefined') return [];
-    try {
-      const savedData = localStorage.getItem('fitlog_saved');
-      return savedData ? JSON.parse(savedData) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  // 🔥 plan পরিবর্তন হলে localStorage-এ সেভ
-  useEffect(() => {
-    try {
-      localStorage.setItem('fitlog_plan', JSON.stringify(plan));
-    } catch (error) {
-      console.error('Error saving plan:', error);
-    }
-  }, [plan]);
-
-  // 🔥 saved পরিবর্তন হলে localStorage-এ সেভ
-  useEffect(() => {
-    try {
-      localStorage.setItem('fitlog_saved', JSON.stringify(saved));
-    } catch (error) {
-      console.error('Error saving saved:', error);
-    }
-  }, [saved]);
-
-  const addToPlan = (workout: IWorkout) => {
-    setPlan((prev) => {
-      if (prev.some((w) => w.id === workout.id)) return prev;
-      if (prev.length >= 5) return prev;
-      return [...prev, workout];
-    });
   };
-
-  const addToSaved = (workout: IWorkout) => {
-    setSaved((prev) => {
-      if (prev.some((w) => w.id === workout.id)) return prev;
-      return [...prev, workout];
-    });
-  };
-
-  const removeFromPlan = (id: number) => {
-    setPlan((prev) => prev.filter((w) => w.id !== id));
-  };
-
-  const removeFromSaved = (id: number) => {
-    setSaved((prev) => prev.filter((w) => w.id !== id));
-  };
-
-  const isInPlan = (id: number) => plan.some((w) => w.id === id);
-  const isInSaved = (id: number) => saved.some((w) => w.id === id);
 
   return (
-    <PlanContext.Provider
-      value={{
-        plan,
-        saved,
-        addToPlan,
-        addToSaved,
-        removeFromPlan,
-        removeFromSaved,
-        isInPlan,
-        isInSaved,
-      }}
-    >
-      {children}
-    </PlanContext.Provider>
+    <div className="bg-black min-h-screen py-10 px-4">
+      <div className="container mx-auto">
+
+        {/* Header */}
+        <h1 className="text-white text-3xl md:text-4xl font-black uppercase">
+          My Plan
+        </h1>
+        <p className="text-neutral-500 text-sm mt-1 mb-8">
+          Cap of five lifts for today. Finish them, then load more.
+        </p>
+
+        {/* Metrics */}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5">
+            <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">
+              Exercises
+            </p>
+            <p className="text-white text-3xl font-black mt-2">
+              {totalExercises}
+            </p>
+          </div>
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5">
+            <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">
+              Minutes
+            </p>
+            <p className="text-white text-3xl font-black mt-2">
+              {totalMinutes}
+            </p>
+          </div>
+          <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-5">
+            <p className="text-neutral-500 text-xs font-bold uppercase tracking-widest">
+              Calories
+            </p>
+            <p className="text-white text-3xl font-black mt-2">
+              {totalCalories}
+            </p>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex gap-2 border-b border-neutral-800 mb-6">
+          <button
+            onClick={() => setActiveTab('plan')}
+            className={`px-5 py-3 font-bold text-sm uppercase tracking-wider transition-all ${
+              activeTab === 'plan'
+                ? 'text-lime-400 border-b-2 border-lime-400'
+                : 'text-neutral-500 hover:text-white'
+            }`}
+          >
+            Today&apos;s Plan ({plan.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('saved')}
+            className={`px-5 py-3 font-bold text-sm uppercase tracking-wider transition-all ${
+              activeTab === 'saved'
+                ? 'text-lime-400 border-b-2 border-lime-400'
+                : 'text-neutral-500 hover:text-white'
+            }`}
+          >
+            Saved ({saved.length})
+          </button>
+        </div>
+
+        {/* Content */}
+        {currentList.length === 0 ? (
+          <div className="text-center py-20">
+            <h2 className="text-white text-2xl font-black uppercase mb-2">
+              Nothing Here Yet
+            </h2>
+            <p className="text-neutral-500 mb-6">
+              Browse the library and add a lift to get today moving.
+            </p>
+            <Link
+              href="/workout"
+              className="inline-block bg-lime-400 hover:bg-lime-300 text-black font-bold px-6 py-3 rounded-full"
+            >
+              Go to workouts
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {currentList.map((workout) => (
+              <PlanCard
+                key={workout.id}
+                workout={workout}
+                tab={activeTab}
+                onRemove={handleRemove}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 
-export const usePlan = () => useContext(PlanContext);
+// PlanCard Component
+function PlanCard({
+  workout,
+  tab,
+  onRemove,
+}: {
+  workout: IWorkout;
+  tab: 'plan' | 'saved';
+  onRemove: (id: number) => void;
+}) {
+  const [isDone, setIsDone] = useState(false);
+
+  const handleDone = () => {
+    setIsDone(true);
+    toast.success(`"${workout.name}" marked as done!`);
+  };
+
+  return (
+    <div
+      className={`bg-neutral-900 border border-neutral-800 rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-center ${
+        isDone ? 'opacity-60' : ''
+      }`}
+    >
+      <div className="relative w-full md:w-32 h-32 rounded-xl overflow-hidden shrink-0">
+        <Image
+          src={workout.image}
+          alt={workout.name}
+          fill
+          unoptimized
+          className="object-cover"
+          sizes="150px"
+        />
+      </div>
+
+      <div className="flex-1 w-full">
+        <h3
+          className={`text-white font-bold uppercase ${
+            isDone ? 'line-through' : ''
+          }`}
+        >
+          {workout.name}
+        </h3>
+        <p className="text-neutral-500 text-sm mb-2">{workout.equipment}</p>
+
+        <div className="flex gap-4 text-xs text-neutral-400">
+          <span>{workout.duration} min</span>
+          <span>{workout.caloriesBurned} kcal</span>
+          <span>{workout.rating}</span>
+        </div>
+      </div>
+
+      <div className="flex gap-2 w-full md:w-auto flex-wrap justify-end">
+        <Link
+          href={`/workout/${workout.id}`}
+          className="bg-neutral-800 hover:bg-neutral-700 text-white text-xs font-bold px-4 py-2 rounded-full"
+        >
+          View Details
+        </Link>
+
+        {tab === 'plan' && (
+          <button
+            onClick={handleDone}
+            disabled={isDone}
+            className={`text-xs font-bold px-4 py-2 rounded-full ${
+              isDone
+                ? 'bg-neutral-800 text-neutral-500 cursor-not-allowed'
+                : 'bg-lime-400 hover:bg-lime-300 text-black'
+            }`}
+          >
+            {isDone ? 'Done' : 'Mark as Done'}
+          </button>
+        )}
+
+        <button
+          onClick={() => onRemove(workout.id)}
+          className="bg-red-500/20 hover:bg-red-500 text-red-400 hover:text-white text-xs font-bold px-4 py-2 rounded-full"
+        >
+          Remove
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default MyPlanPage;
