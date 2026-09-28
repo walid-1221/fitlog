@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useMemo } from 'react';
-import { IWorkout } from '@/types/types';
+import { IWorkout } from '@/app/types/types';
 import LibraryCard from '@/app/Component/Homepage/homepage/Librarycard';
 
 type SortOption = 'duration' | 'calories' | 'rating';

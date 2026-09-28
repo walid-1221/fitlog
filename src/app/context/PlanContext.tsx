@@ -9,7 +9,9 @@ import React, {
 } from 'react';
 import { IWorkout } from '@/app/types/types';
 
-
+// ============================================
+// Context Type
+// ============================================
 interface PlanContextType {
   plan: IWorkout[];
   saved: IWorkout[];
@@ -19,10 +21,11 @@ interface PlanContextType {
   removeFromSaved: (id: number) => void;
   isInPlan: (id: number) => boolean;
   isInSaved: (id: number) => boolean;
-  mounted: boolean;
 }
 
-
+// ============================================
+// Create Context
+// ============================================
 const PlanContext = createContext<PlanContextType>({
   plan: [],
   saved: [],
@@ -32,58 +35,57 @@ const PlanContext = createContext<PlanContextType>({
   removeFromSaved: () => {},
   isInPlan: () => false,
   isInSaved: () => false,
-  mounted: false,
 });
 
 // ============================================
 // Plan Provider
 // ============================================
 export const PlanProvider = ({ children }: { children: ReactNode }) => {
-  const [plan, setPlan] = useState<IWorkout[]>([]);
-  const [saved, setSaved] = useState<IWorkout[]>([]);
-  const [mounted, setMounted] = useState(false);
-
-  // 🔥 localStorage থেকে লোড (একবার, mount-এ)
-  useEffect(() => {
-    setMounted(true);
+  // 🔥 Lazy Initialization — localStorage থেকে সরাসরি load
+  const [plan, setPlan] = useState<IWorkout[]>(() => {
+    if (typeof window === 'undefined') return [];
     try {
-      const savedPlan = localStorage.getItem('fitlog_plan');
-      const savedSaved = localStorage.getItem('fitlog_saved');
-      if (savedPlan) setPlan(JSON.parse(savedPlan));
-      if (savedSaved) setSaved(JSON.parse(savedSaved));
-    } catch (error) {
-      console.error('Error loading from localStorage:', error);
+      const savedData = localStorage.getItem('fitlog_plan');
+      return savedData ? JSON.parse(savedData) : [];
+    } catch {
+      return [];
     }
-  }, []);
+  });
+
+  const [saved, setSaved] = useState<IWorkout[]>(() => {
+    if (typeof window === 'undefined') return [];
+    try {
+      const savedData = localStorage.getItem('fitlog_saved');
+      return savedData ? JSON.parse(savedData) : [];
+    } catch {
+      return [];
+    }
+  });
 
   // 🔥 plan পরিবর্তন হলে localStorage-এ সেভ
   useEffect(() => {
-    if (!mounted) return;
     try {
       localStorage.setItem('fitlog_plan', JSON.stringify(plan));
     } catch (error) {
-      console.error('Error saving plan to localStorage:', error);
+      console.error('Error saving plan:', error);
     }
-  }, [plan, mounted]);
+  }, [plan]);
 
   // 🔥 saved পরিবর্তন হলে localStorage-এ সেভ
   useEffect(() => {
-    if (!mounted) return;
     try {
       localStorage.setItem('fitlog_saved', JSON.stringify(saved));
     } catch (error) {
-      console.error('Error saving saved to localStorage:', error);
+      console.error('Error saving saved:', error);
     }
-  }, [saved, mounted]);
+  }, [saved]);
 
   // ============================================
   // Actions
   // ============================================
   const addToPlan = (workout: IWorkout) => {
     setPlan((prev) => {
-      // Duplicate check
       if (prev.some((w) => w.id === workout.id)) return prev;
-      // Cap of 5 (optional — requirement-এ আছে)
       if (prev.length >= 5) return prev;
       return [...prev, workout];
     });
@@ -107,9 +109,6 @@ export const PlanProvider = ({ children }: { children: ReactNode }) => {
   const isInPlan = (id: number) => plan.some((w) => w.id === id);
   const isInSaved = (id: number) => saved.some((w) => w.id === id);
 
-  // ============================================
-  // Provider
-  // ============================================
   return (
     <PlanContext.Provider
       value={{
@@ -121,7 +120,6 @@ export const PlanProvider = ({ children }: { children: ReactNode }) => {
         removeFromSaved,
         isInPlan,
         isInSaved,
-        mounted,
       }}
     >
       {children}
@@ -129,13 +127,4 @@ export const PlanProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-// ============================================
-// Custom Hook
-// ============================================
-export const usePlan = () => {
-  const context = useContext(PlanContext);
-  if (!context) {
-    throw new Error('usePlan must be used within a PlanProvider');
-  }
-  return context;
-};
+export const usePlan = () => useContext(PlanContext);

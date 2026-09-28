@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { toast } from 'react-toastify';
-import { IWorkout } from '@/types/types';
+import { IWorkout } from '@/app/types/types';
 import { usePlan } from '@/app/context/PlanContext';
 
 const PlanButtons = ({ workout }: { workout: IWorkout }) => {

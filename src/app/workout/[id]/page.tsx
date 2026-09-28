@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { IWorkout } from '@/types/types';
+import { IWorkout } from '@/app/types/types';
 import PlanButtons from './PlanButtons';
 
 interface WorkoutDetailsPageProps {
@@ -36,7 +36,7 @@ const WorkoutDetailsPage = async ({ params }: WorkoutDetailsPageProps) => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 bg-neutral-950 rounded-3xl p-6 lg:p-10 border border-neutral-800">
 
           {/* Left: Image */}
-          <div className="relative h-[400px] lg:h-full min-h-[400px] rounded-2xl overflow-hidden">
+<div className="relative h-100 lg:h-full min-h-100 rounded-2xl overflow-hidden">
             <Image
               src={workout.image}
               alt={workout.name}
@@ -91,7 +91,7 @@ const WorkoutDetailsPage = async ({ params }: WorkoutDetailsPageProps) => {
               <ol className="space-y-2 text-sm text-neutral-400">
                 {workout.instructions.map((instruction, idx) => (
                   <li key={idx} className="flex gap-3">
-                    <span className="text-neutral-600 font-bold min-w-[20px]">
+<span className="text-neutral-600 font-bold min-w-5">
                       {idx + 1}.
                     </span>
                     <span>{instruction}</span>

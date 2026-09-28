@@ -1,5 +1,5 @@
 import React from 'react';
-import { IWorkout } from '@/types/types';
+import { IWorkout } from '@/app/types/types';
 import LibraryCard from '@/app/Component/Homepage/homepage/Librarycard';
 
 // ✅ নতুন API URL

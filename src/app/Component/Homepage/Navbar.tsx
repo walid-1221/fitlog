@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import logo from '@/app/assets/logo.png';
 import NavCounts from './NavCounts';
+
 import NavLink from './NavLink';
 
 const Navbar = () => {
